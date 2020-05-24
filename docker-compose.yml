@@ -1,0 +1,43 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "8000:5000"
+    volumes:
+      - .:/user/src/app
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_HOST=localhost
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=example
+    networks:
+      - default
+    depends_on:
+      - database
+#    entrypoint:
+#      - web
+  redis:
+    image: "redis:alpine"
+
+  database:
+    container_name: postgres
+    image: "postgres:latest"
+    ports:
+      - "5432:5432"
+    env_file: database.conf
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+    networks:
+      - default
+
+  alembic:
+    image: docker_tut_web
+    volumes:
+      - ../:/user/src/app
+    entrypoint: "alembic"
+
+volumes:
+  database-data:
+
