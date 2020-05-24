@@ -1,6 +1,6 @@
 from app import app, db
-from app.cats import Cats
-from app.people import Person
+from app.models.cats import Cats
+from app.models.people import Person
 from flask import render_template, url_for, flash, redirect
 from app.forms.forms import LoginForm, RegistrationForm
 
