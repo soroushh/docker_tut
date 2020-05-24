@@ -1,5 +1,6 @@
 from app import app, db
 from app.models.cats import Cats
+from app.models.user import User
 from app.models.people import Person
 from flask import render_template, url_for, flash, redirect
 from app.forms.forms import LoginForm, RegistrationForm
@@ -68,6 +69,19 @@ def create_person(name, family):
     db.session.commit()
 
     return f'The person:{name} {family} was created successfully.'
+
+
+@app.route('/create-user/<username>/<email>/<password>')
+def create_user(username, email, password):
+    """."""
+    db.session.add(User(
+        username=username,
+        email=email,
+        password=password
+    ))
+    db.session.commit()
+
+    return f'The username:{username} was created successfully.'
 
 
 if __name__ == "__main__":
