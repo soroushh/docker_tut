@@ -1,13 +1,20 @@
-from models import app, db
-from models.cats import Cats
-from models.people import Person
+from app import app, db
+from app.cats import Cats
+from app.people import Person
+from flask import render_template
 
 
 @app.route('/health')
 @app.route('/')
 def health():
     """."""
-    return 'health'
+    return '<h1>health</h1>'
+
+
+@app.route('/home')
+def home():
+    """."""
+    return render_template('home.html')
 
 
 @app.route('/create-cat/<name>/<breed>')

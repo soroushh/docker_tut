@@ -1,4 +1,4 @@
-from models import db
+from app import db
 class Cats(db.Model):
     __tablename__ = 'cats'
     id = db.Column(db.Integer, primary_key=True)
