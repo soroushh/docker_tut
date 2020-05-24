@@ -26,7 +26,7 @@ class Cats(db.Model):
     __tablename__ = 'cats'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
-    price = db.Column(db.Integer)
+    price = db.Column(db.Integer, default=1000)
     breed = db.Column(db.String(100))
 
 
@@ -38,77 +38,21 @@ class Person(db.Model):
     family = db.Column(db.String(20))
 
 
-def get_hit_count():
-    retries = 5
-    while True:
-        try:
-            return cache.incr('hits')
-        except redis.exceptions.ConnectionError as exc:
-            if retries == 0:
-                raise exc
-            retries -= 1
-            time.sleep(0.5)
-
-
-@app.route('/')
-def hello():
-    db.create_all()
-    db.session.add(Cats(name='soroush', price=1000, breed='German'))
-    db.session.commit()
-    return 'Cat soroush successfully saved.'
-
-
-@app.route('/show_cats')
-def show():
-    cat = Cats.query.filter_by(name ='soroush').first()
-    return cat.name
-
-
-@app.route('/create_cat/<string:name>/<string:breed>/<int:price>/<pname>/<family>')
-def create_cat(name, breed, price, pname, family):
-    """."""
-    try:
-        create_cat(name=name, breed=breed, price=price, commit=False)
-        raise Exception('An error was raised')
-    except Exception:
-        create_person(name=pname, family=family)
-        return 'Committed after raising an error.'
-
-    return f'Cat named {name} with breed {breed} was created successfully.'
-
-
-@app.route('/commit')
-def commit():
-    """."""
-    db.session.commit()
-    return 'abc'
-
-
-@app.route('/drop-all')
-def drop_all_tables():
-    """."""
-    db.drop_all()
-    return "All tables removed and recreated successfully."
-
-
 @app.route('/health')
+@app.route('/')
 def health():
     """."""
     return 'health'
 
 
-def create_cat(name, price, breed, commit=True):
+@app.route('/create-cat/<name>/<breed>')
+def create_cat(name, breed):
     """."""
-    db.session.add(Cats(name=name, breed=breed, price=price))
-    if commit:
-        db.session.commit()
-    else:
-        db.session.flush()
-
-def create_person(name, family):
-    """."""
-    db.session.add(Person(name=name, family=family))
+    db.session.add(Cats(name=name, breed=breed))
     db.session.commit()
+
+    return f'The cat: {name} with the breed:{breed} is created successfully.'
+
 
 
 
