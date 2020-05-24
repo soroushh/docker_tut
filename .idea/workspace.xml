@@ -19,8 +19,8 @@
               <file pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/app.py">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="420">
-                      <caret line="28" column="46" selection-start-line="28" selection-start-column="46" selection-end-line="28" selection-end-column="46" />
+                    <state relative-caret-position="645">
+                      <caret line="43" selection-start-line="43" selection-end-line="43" />
                       <folding>
                         <element signature="e#0#23#0" expanded="true" />
                       </folding>
@@ -110,8 +110,8 @@
               <file pinned="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/app.py">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state relative-caret-position="600">
-                      <caret line="40" selection-start-line="40" selection-end-line="40" />
+                    <state relative-caret-position="420">
+                      <caret line="28" selection-start-line="28" selection-end-line="28" />
                       <folding>
                         <element signature="e#0#23#0" expanded="true" />
                       </folding>
@@ -252,12 +252,12 @@
       <workItem from="1589747854743" duration="3448000" />
       <workItem from="1589796440914" duration="404000" />
       <workItem from="1590314044148" duration="3794000" />
-      <workItem from="1590318326010" duration="3018000" />
+      <workItem from="1590318326010" duration="3205000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="37474000" />
+    <option name="totallyTimeSpent" value="37661000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -383,8 +383,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="46" selection-start-line="28" selection-start-column="46" selection-end-line="28" selection-end-column="46" />
+        <state relative-caret-position="645">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>

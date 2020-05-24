@@ -1,25 +1,13 @@
 from flask import Flask
 import redis
-import sys
-import time
 from flask_sqlalchemy import SQLAlchemy
-import psycopg2
-from app_conf import DATABASE_CONNECTION_URI
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://test:password@postgres:5432/example'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy()
 db.init_app(app)
-# db.create_all()
 
 cache = redis.Redis(host='redis', port=6379)
-
-
-def print_psycopg2_exception(err):
-    err_type, err_obj, traceback = sys.exc_info()
-
-    # get the line number when exception occured
-    line_num = traceback.tb_lineno
 
 
 class Cats(db.Model):
@@ -52,10 +40,6 @@ def create_cat(name, breed):
     db.session.commit()
 
     return f'The cat: {name} with the breed:{breed} is created successfully.'
-
-
-
-
 
 
 if __name__ == "__main__":
