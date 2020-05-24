@@ -88,7 +88,6 @@ def commit():
 def drop_all_tables():
     """."""
     db.drop_all()
-    db.create_all()
     return "All tables removed and recreated successfully."
 
 

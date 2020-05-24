@@ -27,6 +27,8 @@ services:
     ports:
       - "5432:5432"
     env_file: database.conf
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
     volumes:
       - database-data:/var/lib/postgresql/data/
     networks:
@@ -35,7 +37,9 @@ services:
   alembic:
     image: docker_tut_web
     volumes:
-      - ../:/user/src/app
+      - ./:/user/src/app
+    depends_on:
+      - web
     entrypoint: "alembic"
 
 volumes:
