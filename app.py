@@ -1,7 +1,8 @@
 from app import app, db
 from app.cats import Cats
 from app.people import Person
-from flask import render_template, url_for
+from flask import render_template, url_for, flash, redirect
+from app.forms.forms import LoginForm, RegistrationForm
 
 
 @app.route('/health')
@@ -21,6 +22,34 @@ def home():
 def about():
     """."""
     return render_template('about.html')
+
+
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    """."""
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        flash(
+            f'Acoount created for {form.username.data}!',
+            'success'
+        )
+        return redirect(url_for('home'))
+
+    return render_template('register.html', title='Register', form=form)
+
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    """."""
+    form = LoginForm()
+    if form.validate_on_submit():
+        flash(
+            'Logged in successfully.',
+            'success'
+        )
+        return render_template(url_for('home'))
+
+    return render_template('login.html', title='Login', form=form)
 
 
 @app.route('/create-cat/<name>/<breed>')

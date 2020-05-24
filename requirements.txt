@@ -2,3 +2,5 @@ flask
 flask-sqlalchemy
 redis
 alembic
+flask-wtf
+email_validator
