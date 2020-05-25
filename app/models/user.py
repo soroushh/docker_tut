@@ -1,4 +1,7 @@
 from app import db
+from app.exceptions import (
+    RepetitiveEmailException, RepetitiveUsernameException
+)
 
 
 class User(db.Model):
@@ -12,5 +15,22 @@ class User(db.Model):
     def __repr__(self):
         """."""
         return f'User({self.username},{self.email},{self.image})'
+
+    @classmethod
+    def create_user(cls, username, password, email):
+        """."""
+        rep_user_email = cls.query.filter_by(email=email).first()
+        rep_user_username = cls.query.filter_by(username=username).first()
+
+        if rep_user_email:
+            raise RepetitiveEmailException(
+                'The email is repetitive.'
+            )
+        if rep_user_username:
+            raise RepetitiveUsernameException(
+                'The username is repetitive.'
+            )
+        db.session.add(cls(username=username, email=email, password=password))
+        db.session.commit()
 
 

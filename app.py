@@ -1,4 +1,4 @@
-from app import app, db
+from app import app, db, bcrypt
 from app.models.cats import Cats
 from app.models.user import User
 from app.models.people import Person
@@ -30,11 +30,22 @@ def register():
     """."""
     form = RegistrationForm()
     if form.validate_on_submit():
-        flash(
-            f'Acoount created for {form.username.data}!',
-            'success'
-        )
-        return redirect(url_for('home'))
+        try:
+            User.create_user(
+                username=form.username.data,
+                password=bcrypt.generate_password_hash(form.password.data),
+                email=form.email.data
+            )
+            flash(
+                f' The user:{form.username.data} is created.',
+                f'success'
+            )
+            return redirect(url_for('login'))
+        except Exception as exec:
+            flash(
+                str(exec),
+                'danger'
+            )
 
     return render_template('register.html', title='Register', form=form)
 
