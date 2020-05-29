@@ -1,8 +1,9 @@
-from app import db, login_manager
+from app import db, login_manager, bcrypt
 from app.exceptions import (
-    RepetitiveEmailException, RepetitiveUsernameException
+    RepetitiveEmailException, RepetitiveUsernameException,
+    InvalidEmailException, InvalidPasswordException
 )
-from flask_login import UserMixin
+from flask_login import UserMixin, login_user
 
 
 @login_manager.user_loader
@@ -38,5 +39,24 @@ class User(db.Model, UserMixin):
             )
         db.session.add(cls(username=username, email=email, password=password))
         db.session.commit()
+
+    @classmethod
+    def login(cls, email, password, remember):
+        """Finds a user by a specific email and password."""
+        user = cls.query.filter_by(email=email).first()
+
+        if not user:
+            raise InvalidEmailException('The email is invalid.')
+
+        if user and bcrypt.check_password_hash(user.password, password):
+            login_user(user, remember=remember)
+        else:
+            raise InvalidPasswordException('The password is invalid.')
+
+    def get_id(self):
+        """."""
+        return self.user_id
+
+
 
 

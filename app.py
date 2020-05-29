@@ -4,6 +4,7 @@ from app.models.user import User
 from app.models.people import Person
 from flask import render_template, url_for, flash, redirect
 from app.forms.forms import LoginForm, RegistrationForm
+from app.exceptions import InvalidPasswordException, InvalidEmailException
 
 
 @app.route('/health')
@@ -33,7 +34,7 @@ def register():
         try:
             User.create_user(
                 username=form.username.data,
-                password=bcrypt.generate_password_hash(form.password.data),
+                password=bcrypt.generate_password_hash(form.password.data).decode('utf-8'),
                 email=form.email.data
             )
             flash(
@@ -55,11 +56,30 @@ def login():
     """."""
     form = LoginForm()
     if form.validate_on_submit():
-        flash(
-            'Logged in successfully.',
-            'success'
-        )
-        return redirect(url_for('home'))
+        try:
+            User.login(
+                email=form.email.data,
+                password=form.password.data,
+                remember=form.remember.data
+            )
+
+            flash(
+                'Successfully logged in.',
+                'success'
+            )
+            return redirect(url_for('home'))
+
+        except InvalidPasswordException as error:
+            flash(
+                str(error),
+                'danger'
+            )
+
+        except InvalidEmailException as error:
+            flash(
+                str(error),
+                'danger'
+            )
 
     return render_template('login.html', title='Login', form=form)
 
