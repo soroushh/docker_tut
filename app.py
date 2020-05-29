@@ -91,6 +91,14 @@ def login():
     return render_template('login.html', title='Login', form=form)
 
 
+@app.route('/logout', methods=['POST', 'GET'])
+def logout():
+    """."""
+    User.log_out()
+    return redirect(url_for('home'))
+
+
+
 @app.route('/create-cat/<name>/<breed>')
 def create_cat(name, breed):
     """."""

@@ -3,7 +3,7 @@ from app.exceptions import (
     RepetitiveEmailException, RepetitiveUsernameException,
     InvalidEmailException, InvalidPasswordException
 )
-from flask_login import UserMixin, login_user
+from flask_login import UserMixin, login_user, logout_user
 
 
 @login_manager.user_loader
@@ -56,6 +56,11 @@ class User(db.Model, UserMixin):
     def get_id(self):
         """."""
         return self.user_id
+
+    @staticmethod
+    def log_out():
+        """."""
+        logout_user()
 
 
 
