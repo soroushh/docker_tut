@@ -51,3 +51,23 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember me')
     submit = SubmitField('Login')
 
+
+class UpdateAccountForm(FlaskForm):
+    """Responsible to create users."""
+    username = StringField(
+        'Username',
+        validators=[
+            DataRequired(),
+            Length(min=2, max=20)
+        ]
+    )
+    email = StringField(
+        'Email',
+        validators=[
+            DataRequired(),
+            Email()
+        ]
+    )
+
+    submit = SubmitField('Update')
+

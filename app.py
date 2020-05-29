@@ -3,7 +3,7 @@ from app.models.cats import Cats
 from app.models.user import User
 from app.models.people import Person
 from flask import render_template, url_for, flash, redirect, request
-from app.forms.forms import LoginForm, RegistrationForm
+from app.forms.forms import LoginForm, RegistrationForm, UpdateAccountForm
 from app.exceptions import InvalidPasswordException, InvalidEmailException
 from flask_login import current_user, login_required
 
@@ -103,7 +103,7 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route('/account')
+@app.route('/account', methods=['POST', 'GET'])
 @login_required
 def account():
     """."""
@@ -111,8 +111,26 @@ def account():
         'static',
         filename='profile_pics/{}'.format(current_user.image_file)
     )
+    form = UpdateAccountForm()
+
+    if request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+
+    if form.validate_on_submit():
+        try:
+            User.update_user(
+                previous_username=current_user.username,
+                new_username=form.username.data,
+                new_email=form.email.data
+            )
+            flash('Account updated successfully.', 'success')
+
+        except Exception as error:
+            flash(str(error), 'danger')
+
     return render_template(
-        'account.html', title='account', image_file=image_file
+        'account.html', title='account', image_file=image_file, form=form
     )
 
 

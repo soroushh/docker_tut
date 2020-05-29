@@ -62,6 +62,32 @@ class User(db.Model, UserMixin):
         """."""
         logout_user()
 
+    @classmethod
+    def update_user(
+        cls,
+        previous_username,
+        new_username,
+        new_email
+    ):
+        """."""
+        current_user = cls.query.filter_by(username=previous_username).first()
+        existing_user_with_new_email = cls.query.filter_by(email=new_email).first()
+        existing_user_with_new_username = cls.query.filter_by(username=new_username).first()
+
+        if existing_user_with_new_username and existing_user_with_new_username.user_id != current_user.user_id:
+            raise RepetitiveUsernameException(
+                'Another user has the new username you have chosen.'
+            )
+
+        if existing_user_with_new_email and existing_user_with_new_email.user_id != current_user.user_id:
+            raise RepetitiveEmailException(
+                'Another user has the new email you have chosen.'
+            )
+
+        current_user.username = new_username
+        current_user.email = new_email
+        db.session.commit()
+
 
 
 
