@@ -11,5 +11,5 @@ db = SQLAlchemy()
 db.init_app(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
-
+login_manager.login_view = 'login'
 cache = redis.Redis(host='redis', port=6379)

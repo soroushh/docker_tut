@@ -5,7 +5,7 @@ from app.models.people import Person
 from flask import render_template, url_for, flash, redirect
 from app.forms.forms import LoginForm, RegistrationForm
 from app.exceptions import InvalidPasswordException, InvalidEmailException
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 
 @app.route('/health')
@@ -97,6 +97,12 @@ def logout():
     User.log_out()
     return redirect(url_for('home'))
 
+
+@app.route('/account')
+@login_required
+def account():
+    """."""
+    return render_template('account.html')
 
 
 @app.route('/create-cat/<name>/<breed>')
