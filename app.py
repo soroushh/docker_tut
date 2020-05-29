@@ -5,6 +5,7 @@ from app.models.people import Person
 from flask import render_template, url_for, flash, redirect
 from app.forms.forms import LoginForm, RegistrationForm
 from app.exceptions import InvalidPasswordException, InvalidEmailException
+from flask_login import current_user
 
 
 @app.route('/health')
@@ -29,6 +30,9 @@ def about():
 @app.route('/register', methods=['POST', 'GET'])
 def register():
     """."""
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
     form = RegistrationForm()
     if form.validate_on_submit():
         try:
@@ -54,6 +58,9 @@ def register():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     """."""
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
     form = LoginForm()
     if form.validate_on_submit():
         try:

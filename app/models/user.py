@@ -42,7 +42,7 @@ class User(db.Model, UserMixin):
 
     @classmethod
     def login(cls, email, password, remember):
-        """Finds a user by a specific email and password."""
+        """Finds a user by a specific email and password and do the login."""
         user = cls.query.filter_by(email=email).first()
 
         if not user:
