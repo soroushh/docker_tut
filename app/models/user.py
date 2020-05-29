@@ -22,9 +22,9 @@ class User(db.Model, UserMixin):
     image_file = db.Column(db.String(20), default='default.jpg', nullable=False)
     password = db.Column(db.String(60), nullable=False)
 
-    def __repr__(self):
-        """."""
-        return f'User({self.username},{self.email},{self.image})'
+    # def __repr__(self):
+    #     """."""
+    #     return f'User({self.username},{self.email},{self.image})'
 
     @classmethod
     def create_user(cls, username, password, email):
