@@ -118,6 +118,7 @@ def account():
         form.email.data = current_user.email
 
     if form.validate_on_submit():
+        raise Exception('abc')
         try:
             User.update_user(
                 previous_username=current_user.username,
