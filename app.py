@@ -59,7 +59,7 @@ def login():
             'Logged in successfully.',
             'success'
         )
-        return render_template(url_for('home'))
+        return redirect(url_for('home'))
 
     return render_template('login.html', title='Login', form=form)
 
