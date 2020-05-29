@@ -2,10 +2,11 @@ from app import app, db, bcrypt
 from app.models.cats import Cats
 from app.models.user import User
 from app.models.people import Person
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect, request
 from app.forms.forms import LoginForm, RegistrationForm
 from app.exceptions import InvalidPasswordException, InvalidEmailException
 from flask_login import current_user, login_required
+
 
 
 @app.route('/health')
@@ -69,11 +70,15 @@ def login():
                 password=form.password.data,
                 remember=form.remember.data
             )
-
             flash(
                 'Successfully logged in.',
                 'success'
             )
+            next_page = request.args.get('next')
+
+            if next_page:
+                return redirect(url_for(next_page[1:]))
+
             return redirect(url_for('home'))
 
         except InvalidPasswordException as error:
