@@ -4,6 +4,8 @@ from app.exceptions import (
     InvalidEmailException, InvalidPasswordException
 )
 from flask_login import UserMixin, login_user, logout_user
+import secrets
+import os
 
 
 @login_manager.user_loader
@@ -87,6 +89,24 @@ class User(db.Model, UserMixin):
         current_user.username = new_username
         current_user.email = new_email
         db.session.commit()
+
+    @classmethod
+    def save_profile_picture(cls, user_id, picture_file_data, picture_pre_path):
+        """."""
+        user = cls.query.get(user_id)
+
+        random_string = secrets.token_hex(8)
+        useless, file_extension = os.path.splitext(picture_file_data.filename)
+        file_name = random_string + file_extension
+        picture_final_path = os.path.join(picture_pre_path, file_name)
+
+        picture_file_data.save(picture_final_path)
+
+        user.image_file = file_name
+        db.session.commit()
+
+        return file_name
+
 
 
 
