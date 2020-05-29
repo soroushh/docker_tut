@@ -6,20 +6,7 @@ from flask import render_template, url_for, flash, redirect, request
 from app.forms.forms import LoginForm, RegistrationForm, UpdateAccountForm
 from app.exceptions import InvalidPasswordException, InvalidEmailException
 from flask_login import current_user, login_required
-import secrets
 import os
-
-
-def save_file(file_data_from_form_field):
-    """Saves the picture from the form in a directory and returns file_name."""
-    random_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(file_data_from_form_field.filename)
-    picture_file_name = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_file_name)
-    file_data_from_form_field.save(picture_path)
-
-    return picture_file_name
-
 
 @app.route('/health')
 @app.route('/')

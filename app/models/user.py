@@ -6,6 +6,7 @@ from app.exceptions import (
 from flask_login import UserMixin, login_user, logout_user
 import secrets
 import os
+from PIL import Image
 
 
 @login_manager.user_loader
@@ -94,13 +95,15 @@ class User(db.Model, UserMixin):
     def save_profile_picture(cls, user_id, picture_file_data, picture_pre_path):
         """."""
         user = cls.query.get(user_id)
-
         random_string = secrets.token_hex(8)
         useless, file_extension = os.path.splitext(picture_file_data.filename)
         file_name = random_string + file_extension
         picture_final_path = os.path.join(picture_pre_path, file_name)
 
-        picture_file_data.save(picture_final_path)
+        output_size = (125, 125)
+        image = Image.open(picture_file_data)
+        image.thumbnail(output_size)
+        image.save(picture_final_path)
 
         user.image_file = file_name
         db.session.commit()
