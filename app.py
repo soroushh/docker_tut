@@ -107,7 +107,13 @@ def logout():
 @login_required
 def account():
     """."""
-    return render_template('account.html')
+    image_file = url_for(
+        'static',
+        filename='profile_pics/{}'.format(current_user.image_file)
+    )
+    return render_template(
+        'account.html', title='account', image_file=image_file
+    )
 
 
 @app.route('/create-cat/<name>/<breed>')
