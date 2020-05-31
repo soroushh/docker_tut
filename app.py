@@ -3,7 +3,10 @@ from app.models.cats import Cats
 from app.models.user import User
 from app.models.people import Person
 from flask import render_template, url_for, flash, redirect, request
-from app.forms.forms import LoginForm, RegistrationForm, UpdateAccountForm
+from app.forms.forms import (
+    LoginForm, RegistrationForm, UpdateAccountForm, RequestResetForm,
+    ResetPasswordForm
+)
 from app.exceptions import InvalidPasswordException, InvalidEmailException
 from flask_login import current_user, login_required
 import os
@@ -173,6 +176,40 @@ def create_user(username, email, password):
     db.session.commit()
 
     return f'The username:{username} was created successfully.'
+
+
+@app.route('/request-password-update', methods=['POST', 'GET'])
+def request_password_reset():
+    """."""
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        try:
+            user = User.get_by_email(email=form.email.data)
+        except InvalidEmailException as error:
+            flash(str(error), 'danger')
+    return render_template('request_password_update.html', form=form)
+
+
+@app.route('/reset-password/<token>', methods=['POST', 'GET'])
+def reset_password(token):
+    """."""
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    if User.verify_reset_token(token=token):
+        form = ResetPasswordForm()
+        if form.validate_on_submit():
+            return 'abc'
+
+    return render_template('reset_password.html', form=form)
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
