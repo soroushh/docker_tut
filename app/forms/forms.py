@@ -72,3 +72,16 @@ class UpdateAccountForm(FlaskForm):
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
 
+
+class RequestResetForm(FlaskForm):
+    """Request for the change of password."""
+    email = StringField(
+        'Email',
+        validators=[
+            DataRequired(),
+            Email()
+        ]
+    )
+    submit = SubmitField('Update')
+
+

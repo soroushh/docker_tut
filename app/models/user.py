@@ -128,3 +128,13 @@ class User(db.Model, UserMixin):
             return None
 
         return User.query.get(user_id)
+
+    @classmethod
+    def get_by_email(cls, email):
+        """Finds a user by the email."""
+        user = cls.query.filter_by(email=email).first()
+        if not user:
+            raise InvalidEmailException(
+                'The user with provided email does not exist.'
+            )
+        return user
