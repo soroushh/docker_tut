@@ -157,6 +157,10 @@ def request_password_reset():
     if form.validate_on_submit():
         try:
             user = User.get_by_email(email=form.email.data)
+            User.send_password_update_email(
+                payload={'user_id': user.user_id}
+            )
+
         except InvalidEmailException as error:
             flash(str(error), 'danger')
     return render_template('request_password_update.html', form=form)
@@ -167,12 +171,15 @@ def reset_password(token):
     """."""
     if current_user.is_authenticated:
         return redirect(url_for('home'))
-    if User.verify_reset_token(token=token):
+    user = User.verify_reset_token(token=token)
+    if user:
         form = ResetPasswordForm()
         if form.validate_on_submit():
             return 'abc'
-
-    return render_template('reset_password.html', form=form)
+        return render_template('reset_password.html', form=form)
+    else:
+        flash('The token is not valid or expired.', 'danger')
+        return redirect(url_for('request_password_reset'))
 
 
 if __name__ == "__main__":

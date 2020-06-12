@@ -112,14 +112,22 @@ class User(db.Model, UserMixin):
         return file_name
 
     def get_reset_token(self, expires_sec=1800):
-        """Creates a timed json token."""
+        """Creates a timed json token.
+
+        The expiry duration time of the token is 1800 seconds which is half an
+        hour.
+        """
         s = Serialiser(app.config['SECRET_KEY'], expires_sec)
 
         return s.dump({'user_id': self.user_id}).decode('utf-8')
 
     @staticmethod
     def verify_reset_token(token):
-        """."""
+        """Receives a token and verifies if it is valid.
+
+        If the token is valid, we will get the user_id of the user which has
+        forgotten the password for logging in.
+        """
         s = Serialiser(app.config['SECRET_KEY'])
 
         try:
