@@ -146,3 +146,8 @@ class User(db.Model, UserMixin):
                 'The user with provided email does not exist.'
             )
         return user
+
+    @classmethod
+    def send_password_update_email(cls, payload):
+        """."""
+        pass

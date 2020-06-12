@@ -160,6 +160,11 @@ def request_password_reset():
             User.send_password_update_email(
                 payload={'user_id': user.user_id}
             )
+            flash(
+                'An Email sent by the instructions to change the password',
+                'success'
+            )
+            return redirect(url_for('login'))
 
         except InvalidEmailException as error:
             flash(str(error), 'danger')
