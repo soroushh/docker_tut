@@ -1,4 +1,5 @@
-from app import db, login_manager, bcrypt, app
+from app import db, login_manager, bcrypt, app, mail
+from flask_mail import Message
 from app.exceptions import (
     RepetitiveEmailException, RepetitiveUsernameException,
     InvalidEmailException, InvalidPasswordException
@@ -8,6 +9,7 @@ import secrets
 import os
 from PIL import Image
 from itsdangerous import TimedJSONWebSignatureSerializer as Serialiser
+from flask import url_for
 
 
 @login_manager.user_loader
@@ -148,6 +150,22 @@ class User(db.Model, UserMixin):
         return user
 
     @classmethod
-    def send_password_update_email(cls, payload):
+    def send_password_update_email(cls, user):
         """."""
-        pass
+        s = Serialiser(app.config['SECRET_KEY'], 1800)
+        token = s.dumps({'user_id': user.user_id}).decode('utf-8')
+
+        msg = Message(
+            'Password reset request',
+            sender='sorush.kh68@gmail.com',
+            recipients=[user.email],
+        )
+        msg.body = f"""{url_for(
+            'reset_password', 
+            token=token, 
+            _external=True 
+        )}"""
+        mail.send(message=msg)
+
+
+

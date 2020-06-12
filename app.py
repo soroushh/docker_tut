@@ -158,7 +158,7 @@ def request_password_reset():
         try:
             user = User.get_by_email(email=form.email.data)
             User.send_password_update_email(
-                payload={'user_id': user.user_id}
+                user=user
             )
             flash(
                 'An Email sent by the instructions to change the password',
