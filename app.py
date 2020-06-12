@@ -180,7 +180,15 @@ def reset_password(token):
     if user:
         form = ResetPasswordForm()
         if form.validate_on_submit():
-            return 'abc'
+            user.password = (
+                bcrypt.generate_password_hash(form.password.data).decode(
+                    'utf-8'
+                )
+            )
+            db.session.commit()
+            flash('Password changed successfully for the user.', 'success')
+            return redirect(url_for('login'))
+
         return render_template('reset_password.html', form=form)
     else:
         flash('The token is not valid or expired.', 'danger')
