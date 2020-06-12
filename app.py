@@ -147,37 +147,6 @@ def account():
     )
 
 
-@app.route('/create-cat/<name>/<breed>')
-def create_cat(name, breed):
-    """."""
-    db.session.add(Cats(name=name, breed=breed))
-    db.session.commit()
-
-    return f'The cat: {name} with the breed:{breed} is created successfully.'
-
-
-@app.route('/create-person/<name>/<family>')
-def create_person(name, family):
-    """."""
-    db.session.add(Person(name=name, family=family))
-    db.session.commit()
-
-    return f'The person:{name} {family} was created successfully.'
-
-
-@app.route('/create-user/<username>/<email>/<password>')
-def create_user(username, email, password):
-    """."""
-    db.session.add(User(
-        username=username,
-        email=email,
-        password=password
-    ))
-    db.session.commit()
-
-    return f'The username:{username} was created successfully.'
-
-
 @app.route('/request-password-update', methods=['POST', 'GET'])
 def request_password_reset():
     """."""
@@ -204,12 +173,6 @@ def reset_password(token):
             return 'abc'
 
     return render_template('reset_password.html', form=form)
-
-
-
-
-
-
 
 
 if __name__ == "__main__":
