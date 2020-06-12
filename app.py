@@ -1,7 +1,5 @@
-from app import app, db, bcrypt
-from app.models.cats import Cats
+from app import app, bcrypt
 from app.models.user import User
-from app.models.people import Person
 from flask import render_template, url_for, flash, redirect, request
 from app.forms.forms import (
     LoginForm, RegistrationForm, UpdateAccountForm, RequestResetForm,
@@ -11,15 +9,16 @@ from app.exceptions import InvalidPasswordException, InvalidEmailException
 from flask_login import current_user, login_required
 import os
 
+
 @app.route('/health')
 @app.route('/')
 def health():
     """."""
-    # return '<h1>health</h1>'
-    raise Exception(app.root_path)
+    return 'Pong'
 
 
 @app.route('/home')
+@login_required
 def home():
     """."""
     return render_template('home.html')
