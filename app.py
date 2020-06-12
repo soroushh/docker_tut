@@ -180,12 +180,11 @@ def reset_password(token):
     if user:
         form = ResetPasswordForm()
         if form.validate_on_submit():
-            user.password = (
-                bcrypt.generate_password_hash(form.password.data).decode(
+            user.set_new_password(
+                new_password=bcrypt.generate_password_hash(form.password.data).decode(
                     'utf-8'
                 )
             )
-            db.session.commit()
             flash('Password changed successfully for the user.', 'success')
             return redirect(url_for('login'))
 

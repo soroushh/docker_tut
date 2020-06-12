@@ -167,5 +167,10 @@ class User(db.Model, UserMixin):
         )}"""
         mail.send(message=msg)
 
+    def set_new_password(self, new_password):
+        """Sets a new password for a specific user."""
+        self.password = new_password
+        db.session.commit()
+
 
 
