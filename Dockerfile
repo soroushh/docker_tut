@@ -18,4 +18,4 @@ ENV PSYCOPG_DEBUG=1
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["gunicorn","--bind", "0.0.0.0:5000","gunicorn_config.wsgi:app"]
+CMD ["gunicorn","-c", "gunicorn_config/conf.py","gunicorn_config.wsgi:app"]
