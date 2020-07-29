@@ -2,8 +2,10 @@ version: '3'
 services:
   web:
     build: .
-    ports:
-      - "8000:5000"
+#    ports:
+#      - "8000:5000"
+    expose:
+      - 5000
     volumes:
       - .:/user/src/app
     environment:
@@ -41,6 +43,14 @@ services:
     depends_on:
       - web
     entrypoint: "alembic"
+
+  web_nginx:
+    build: ./nginx_service
+    depends_on:
+      - web
+    ports:
+      - 1337:80
+
 
 volumes:
   database-data:
