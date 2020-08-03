@@ -2,8 +2,6 @@ version: '3'
 services:
   web:
     build: .
-#    ports:
-#      - "8000:5000"
     expose:
       - 5000
     volumes:
@@ -18,16 +16,13 @@ services:
       - default
     depends_on:
       - database
-#    entrypoint:
-#      - web
+
   redis:
     image: "redis:alpine"
 
   database:
     container_name: postgres
     image: "postgres:latest"
-    ports:
-      - "5432:5432"
     env_file: database.conf
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
